@@ -1,6 +1,10 @@
+import 'dotenv/config'
+
 let _extId;
 let _extName;
 let _extVersion;
+let _url = process.env.URL || 'http://localhost';
+let _port = process.env.PORT || 3000;
 
 function setExtension(id, name, version) {
   _extId = id;
@@ -15,6 +19,8 @@ function getExtension() {
     id: _extId,
     name: _extName,
     version: _extVersion,
+    url: `${_url}:${_port}`,
+    port: _port,
   };
 }
 

@@ -1,11 +1,11 @@
 const express = require('express');
 const app = express();
-const port = 3000;
 const state = require('./state');
 const { mkdir, readFile, writeFile } = require('fs/promises');
 const crx = require('./crx');
 const path = require('path');
 const AdmZip = require('adm-zip');
+const { port, url } = state.getExtension();
 
 async function unpackZip() {
   const filePath = path.join('./src.zip');
@@ -38,7 +38,7 @@ async function prepareExt() {
     return console.log(`Error reading manifest.json: ${e}`);
   }
 
-  manifest.update_url = `http://localhost/updates.xml`;
+  manifest.update_url = `${url}/updates.xml`;
 
   try {
     await writeFile('tmp/unpacked/manifest.json', JSON.stringify(manifest));
@@ -78,6 +78,7 @@ function checkExtAvailability(req, res, next) {
   }
   next();
 }
+
 
 app.get('/extension.crx', checkExtAvailability, require('./routes/extension'));
 app.get('/updates.xml', checkExtAvailability, require('./routes/updates'));
