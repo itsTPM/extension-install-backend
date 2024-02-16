@@ -3,13 +3,13 @@
  * extension directory. This uses only the built in Node crypto module.
  */
 
-const AdmZip = require("adm-zip");
-const Pbf = require("pbf");
-const crypto = require("crypto");
-const { promisify } = require("util");
-const { writeFile, stat, readFile } = require("fs/promises");
+const AdmZip = require('adm-zip');
+const Pbf = require('pbf');
+const crypto = require('crypto');
+const { promisify } = require('util');
+const { writeFile, stat, readFile } = require('fs/promises');
 
-const { CrxFileHeader, SignedData } = require("./generated/crx3");
+const { CrxFileHeader, SignedData } = require('./generated/crx3');
 
 let keyPair;
 
@@ -37,13 +37,13 @@ module.exports.createCrx = async function (unpackedFolder) {
   return {
     id: getExtensionIdAsString(
       keyPair.publicKey.export({
-        type: "spki",
-        format: "der",
-      }),
+        type: 'spki',
+        format: 'der',
+      })
     ),
     packed: Buffer.concat([
       // Magic bytes
-      Buffer.from("Cr24", "utf8"),
+      Buffer.from('Cr24', 'utf8'),
       // Version identifier (v3)
       new Uint8Array([3, 0, 0, 0]),
       // Length of header data
@@ -86,15 +86,12 @@ function fileHeader(publicKey, privateKey, signedData, zipBuffer) {
       sha256_with_rsa: [
         {
           public_key: publicKey,
-          signature: Buffer.from(
-            getSignature(privateKey, signedData, zipBuffer),
-            "binary",
-          ),
+          signature: Buffer.from(getSignature(privateKey, signedData, zipBuffer), 'binary'),
         },
       ],
       signed_header_data: signedData,
     },
-    pbf,
+    pbf
   );
 
   return pbf.finish();
@@ -110,19 +107,14 @@ function fileHeader(publicKey, privateKey, signedData, zipBuffer) {
  */
 function headerDataForExtension(keyPair, zipBuffer) {
   const publicKey = keyPair.publicKey.export({
-    type: "spki",
-    format: "der",
+    type: 'spki',
+    format: 'der',
   });
 
   const extensionId = getExtensionId(publicKey);
   const signedData = signedDataForExtensionId(extensionId);
 
-  const header = fileHeader(
-    publicKey,
-    keyPair.privateKey,
-    signedData,
-    zipBuffer,
-  );
+  const header = fileHeader(publicKey, keyPair.privateKey, signedData, zipBuffer);
 
   return header;
 }
@@ -148,7 +140,7 @@ function UInt32Le(size, value) {
  * @param publicKey Public key associated with keypair used to sign extension.
  */
 function getExtensionId(publicKey) {
-  return crypto.createHash("sha256").update(publicKey).digest().subarray(0, 16);
+  return crypto.createHash('sha256').update(publicKey).digest().subarray(0, 16);
 }
 
 // prettier-ignore
@@ -166,10 +158,10 @@ const BASE16_CRX_ALPHABET = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "
  */
 function getExtensionIdAsString(publicKey) {
   return getExtensionId(publicKey)
-    .toString("hex")
-    .split("")
+    .toString('hex')
+    .split('')
     .map((c) => BASE16_CRX_ALPHABET[BASE16_NORMAL_ALPHABET.indexOf(c)])
-    .join("");
+    .join('');
 }
 
 /**
@@ -182,9 +174,9 @@ function getExtensionIdAsString(publicKey) {
  * @returns
  */
 function getSignature(privateKey, headerData, zipBuffer) {
-  const hash = crypto.createSign("sha256");
+  const hash = crypto.createSign('sha256');
 
-  hash.update(Buffer.from("CRX3 SignedData\x00", "utf8"));
+  hash.update(Buffer.from('CRX3 SignedData\x00', 'utf8'));
   hash.update(UInt32Le(4, headerData.length));
   hash.update(headerData);
   hash.update(zipBuffer);
@@ -197,11 +189,11 @@ function getSignature(privateKey, headerData, zipBuffer) {
  */
 async function generateKey() {
   if (
-    await stat("key.pem")
+    await stat('key.pem')
       .then((s) => s.isFile())
       .catch(() => false)
   ) {
-    const privateKeyData = await readFile("key.pem");
+    const privateKeyData = await readFile('key.pem');
     const privateKey = crypto.createPrivateKey(privateKeyData);
 
     return {
@@ -211,14 +203,11 @@ async function generateKey() {
   }
 
   const generateKeyPair = promisify(crypto.generateKeyPair);
-  const { publicKey, privateKey } = await generateKeyPair("rsa", {
+  const { publicKey, privateKey } = await generateKeyPair('rsa', {
     modulusLength: 2048,
   });
 
-  await writeFile(
-    "key.pem",
-    privateKey.export({ type: "pkcs8", format: "pem" }),
-  );
+  await writeFile('key.pem', privateKey.export({ type: 'pkcs8', format: 'pem' }));
 
   return { publicKey, privateKey };
 }
