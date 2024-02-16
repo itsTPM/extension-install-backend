@@ -80,6 +80,8 @@ function checkExtAvailability(req, res, next) {
 }
 
 app.get('/extension.crx', checkExtAvailability, require('./routes/extension'));
+app.get('/updates.xml', checkExtAvailability, require('./routes/updates'));
+app.get('/status', require('./routes/status'));
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
