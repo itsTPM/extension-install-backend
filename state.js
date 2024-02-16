@@ -1,4 +1,4 @@
-import 'dotenv/config'
+require('dotenv').config();
 
 let _extId;
 let _extName;
@@ -19,6 +19,11 @@ function getExtension() {
     id: _extId,
     name: _extName,
     version: _extVersion,
+  };
+}
+
+function getEnv() {
+  return {
     url: `${_url}:${_port}`,
     port: _port,
   };
@@ -27,4 +32,5 @@ function getExtension() {
 module.exports = {
   setExtension,
   getExtension,
+  getEnv,
 };

@@ -28,3 +28,8 @@ coverage
 *.sw?
 
 *.tsbuildinfo
+
+tmp
+key.pem
+build.zip
+.env

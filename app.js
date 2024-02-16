@@ -5,10 +5,9 @@ const { mkdir, readFile, writeFile } = require('fs/promises');
 const crx = require('./crx');
 const path = require('path');
 const AdmZip = require('adm-zip');
-const { port, url } = state.getExtension();
 
 async function unpackZip() {
-  const filePath = path.join('./src.zip');
+  const filePath = path.join('./build.zip');
   const file = await readFile(filePath);
 
   await mkdir('tmp', { recursive: true });
@@ -70,6 +69,8 @@ async function init() {
 
 init();
 
+const { port, url } = state.getEnv();
+
 function checkExtAvailability(req, res, next) {
   if (!state.getExtension()) {
     res.status(404);
@@ -85,5 +86,5 @@ app.get('/updates.xml', checkExtAvailability, require('./routes/updates'));
 app.get('/status', require('./routes/status'));
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`App listening on port ${port}`);
 });

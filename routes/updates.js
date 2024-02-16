@@ -3,7 +3,8 @@ const state = require('../state');
 module.exports = (req, res) => {
   res.setHeader('Content-Type', 'application/xml');
 
-  const { id, version, url } = state.getExtension();
+  const { id, version } = state.getExtension();
+  const { url } = state.getEnv();
 
   // prettier-ignore
   res.send(`
