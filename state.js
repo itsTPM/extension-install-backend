@@ -24,7 +24,7 @@ function getExtension() {
 
 function getEnv() {
   return {
-    url: `${_url}:${_port}`,
+    url: _url,
     port: _port,
   };
 }
