@@ -1,4 +1,4 @@
-# extension-install-backend
+## Extension install — Backend
 
 ### Description
 This is an extension installation server for Chrome browsers that allows you to install extensions **bypassing the Chrome Web Store**
