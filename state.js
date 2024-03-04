@@ -3,7 +3,7 @@ require('dotenv').config();
 let _extId;
 let _extName;
 let _extVersion;
-let _url = process.env.URL || 'http://localhost';
+let _url = process.env.URL || 'http://localhost:3000';
 let _port = process.env.PORT || 3000;
 
 function setExtension(id, name, version) {
