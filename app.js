@@ -1,20 +1,19 @@
 const express = require('express');
 const app = express();
+
 const state = require('./state');
+const { port } = state.getEnv();
 
 const unpackZip = require('./unpackZip');
 const prepareExt = require('./prepareExt');
 
-async function init() {
+// Self-invoking function to unpack the extension and prepare it for serving
+(async () => {
   await unpackZip();
   await prepareExt();
-}
+})();
 
-init();
-
-const { port } = state.getEnv();
-
-function checkExtAvailability(req, res, next) {
+function checkExtAvailability(_, res, next) {
   if (!state.getExtension()) {
     res.status(404);
     res.send('Extension not uploaded to the server');
