@@ -1,16 +1,17 @@
 const express = require('express');
 const app = express();
 
-const state = require('./state');
+const state = require('./modules/state');
 const { port } = state.getEnv();
 
-const unpackZip = require('./unpackZip');
-const prepareExt = require('./prepareExt');
+const unpackZip = require('./modules/unpackZip');
+const prepareExt = require('./modules/prepareExt');
+const handleFirefox = require('./modules/handleFirefox');
 
-// Self-invoking function to unpack the extension and prepare it for serving
 (async () => {
   await unpackZip();
   await prepareExt();
+  await handleFirefox();
 })();
 
 function checkExtAvailability(_, res, next) {
