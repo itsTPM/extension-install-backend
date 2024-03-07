@@ -24,6 +24,7 @@ function checkExtAvailability(_, res, next) {
 
 app.get('/extension.crx', checkExtAvailability, require('./routes/extension'));
 app.get('/updates.xml', checkExtAvailability, require('./routes/updates'));
+app.get('/firefox/updates', require('./routes/firefox-updates'));
 app.get('/status', require('./routes/status'));
 
 app.listen(port, () => {
