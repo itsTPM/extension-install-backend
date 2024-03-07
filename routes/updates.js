@@ -1,5 +1,5 @@
-const state = require('../state');
-const logRequest = require('../logRequest');
+const state = require('../modules/state');
+const logRequest = require('../modules/logRequest');
 
 module.exports = (req, res) => {
   res.setHeader('Content-Type', 'application/xml');

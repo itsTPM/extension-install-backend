@@ -1,6 +1,6 @@
-const json = require('../firefoxUpdates.json');
+const json = require('./xpi/updates.json');
 
 module.exports = (_, res) => {
   res.setHeader('Content-Type', 'application/json');
-  res.send(JSON.stringify(json));
+  res.send(json);
 };

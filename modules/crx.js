@@ -9,7 +9,7 @@ const crypto = require('crypto');
 const { promisify } = require('util');
 const { writeFile, stat, readFile } = require('fs/promises');
 
-const { CrxFileHeader, SignedData } = require('./generated/crx3');
+const { CrxFileHeader, SignedData } = require('../generated/crx3');
 
 let keyPair;
 

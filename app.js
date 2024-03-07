@@ -22,10 +22,13 @@ function checkExtAvailability(_, res, next) {
   next();
 }
 
+// Chrome routes
 app.get('/extension.crx', checkExtAvailability, require('./routes/extension'));
 app.get('/updates.xml', checkExtAvailability, require('./routes/updates'));
-app.get('/firefox/updates', require('./routes/firefox-updates'));
 app.get('/status', require('./routes/status'));
+
+// Firefox routes
+app.use('/firefox', express.static('xpi'));
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);

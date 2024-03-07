@@ -1,5 +1,5 @@
 const path = require('path');
-const logRequest = require('../logRequest');
+const logRequest = require('../modules/logRequest');
 
 module.exports = (req, res) => {
   res.setHeader('Content-Type', 'application/x-chrome-extension');
