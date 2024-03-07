@@ -3,6 +3,7 @@ require('dotenv').config();
 let _extId;
 let _extName;
 let _extVersion;
+let _firefoxVersion;
 let _url = process.env.URL || 'http://localhost:3000';
 let _port = process.env.PORT || 3000;
 
@@ -29,8 +30,18 @@ function getEnv() {
   };
 }
 
+function setFirefoxVersion(version) {
+  _firefoxVersion = version;
+}
+
+function getFirefoxVersion() {
+  return _firefoxVersion;
+}
+
 module.exports = {
   setExtension,
   getExtension,
   getEnv,
+  setFirefoxVersion,
+  getFirefoxVersion,
 };

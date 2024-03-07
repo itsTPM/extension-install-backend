@@ -30,6 +30,7 @@ app.get('/status', require('./routes/status'));
 
 // Firefox routes
 app.use('/firefox', express.static('xpi'));
+app.use('/firefox/latest', require('./routes/firefox-latest'));
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
